@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Sayang ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #fff;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .heart {
+            font-size: 4em;
+            color: #ff6b6b;
+            animation: heartbeat 1.5s infinite;
+            display: inline-block;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+        }
+
+        .message {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #333;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .signature {
+            font-style: italic;
+            color: #666;
+            margin-top: 30px;
+            font-size: 1.1em;
+        }
+
+        .balloons {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .balloon {
+            position: absolute;
+            width: 50px;
+            height: 60px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .balloon:nth-child(1) { left: 10%; background: #fff; animation-delay: 0s; }
+        .balloon:nth-child(2) { left: 30%; background: #ddd; animation-delay: 1s; }
+        .balloon:nth-child(3) { left: 50%; background: #bbb; animation-delay: 2s; }
+        .balloon:nth-child(4) { left: 70%; background: #999; animation-delay: 3s; }
+        .balloon:nth-child(5) { left: 90%; background: #777; animation-delay: 4s; }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #2d2d2d 0%, #000 100%);
+            color: white;
+            border: 2px solid #fff;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #000 0%, #2d2d2d 100%);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .photo-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .photo-modal.active {
+            display: flex;
+        }
+
+        .photo-container {
+            max-width: 90%;
+            max-height: 90%;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+
+        .photo-container img {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.3);
+            object-fit: contain;
+            background: #fff;
+        }
+
+        .photo-container iframe {
+            max-width: 90%;
+            max-height: 70vh;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.3);
+            aspect-ratio: 16/9;
+        }
+
+        .photo-loading {
+            color: white;
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+
+        .photo-error {
+            color: #ff6b6b;
+            font-size: 1em;
+            margin: 10px 0;
+        }
+
+        .photo-caption {
+            color: white;
+            font-size: 1.5em;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .photo-nav {
+            margin-top: 30px;
+        }
+
+        .photo-nav button {
+            background: white;
+            color: black;
+            border: none;
+            padding: 10px 30px;
+            margin: 0 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: transform 0.2s;
+        }
+
+        .photo-nav button:hover {
+            transform: scale(1.1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .close-modal:hover {
+            color: #ccc;
+        }
+
+        .start-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .start-overlay.hidden {
+            display: none;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #fff 0%, #ddd 100%);
+            color: #000;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.5em;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255,255,255,0.3);
+            transition: transform 0.3s;
+            font-family: 'Georgia', serif;
+        }
+
+        .start-button:hover {
+            transform: scale(1.1);
+        }
+    </style>
+    <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+    <!-- <div class="start-overlay" id="startOverlay">
+        <button class="start-button" onclick="startExperience()">🎵 Mulai 🎵</button>
+    </div> -->
+
+    <div class="balloons">
+        <div class="balloon"></div>
+        <div class="balloon"></div>
+        <div class="balloon"></div>
+        <div class="balloon"></div>
+        <div class="balloon"></div>
+    </div>
+
+    <div id="youtube-player"></div>
+
+    <iframe id="youtube-iframe" 
+            width="0" 
+            height="0" 
+            src="https://www.youtube.com/embed/6TBhFfda0dM?autoplay=1&loop=1&playlist=6TBhFfda0dM&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media"
+            style="position: fixed; top: -9999px; left: -9999px;">
+    </iframe>
+
+    <div class="container">
+        <h1>🎉 HAPPY BIRTHDAY SAYANGNYA AKUUU 🎉</h1>
+        <div class="heart">❤️</div>
+        
+        <div class="message">
+            <p>Untuk orang tersayang,</p>
+            <br>
+            <p>Di hari spesial ini, aku ingin mengucapkan selamat ulang tahun untuk kamu sayang, orang yang paling berarti dalam hidupku. Terima kasih sudah menjadi bagian terbaik dari hari-hariku.</p>
+            <br>
+            <p>Semoga tahun ini membawa kebahagiaan, kesuksesan, dan segala hal indah yang kamu impikan. Aku akan selalu ada di sisimu, mendukung dan menyayangimu.</p>
+            <br>
+            <p>Setiap momen bersamamu adalah hadiah terindah bagiku. I love you so much! ❤️</p>
+        </div>
+
+        <button class="btn" onclick="showSurprise()">Klik untuk Kejutan! 🎁</button>
+
+        <div class="signature">
+            Dengan cinta,<br>
+            Yang selalu menyayangimu
+        </div>
+    </div>
+
+    <div class="photo-modal" id="photoModal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div class="photo-container">
+            <div class="photo-loading" id="photoLoading">Memuat...</div>
+            <div id="mediaContainer"></div>
+            <div class="photo-error" id="photoError" style="display:none;">Media tidak bisa dimuat. Pastikan sharing settings sudah benar.</div>
+            <div class="photo-caption" id="photoCaption"></div>
+            <div class="photo-nav">
+                <button onclick="prevPhoto()">← Sebelumnya</button>
+                <button onclick="nextPhoto()">Selanjutnya →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // GANTI URL FOTO/VIDEO DI SINI
+    const photos = [
+        {
+            type: 'video',
+            // HANYA ID VIDEO YOUTUBE (tYdPe2fDalg) yang dimasukkan
+            url: 'tYdPe2fDalg', 
+            caption: 'Momen pertama kita bersama sayang kamu inget ndaaa'
+        },
+        {
+                type: 'photo',
+                url: 'https://i.imgur.com/fY5qW0X.jpeg',
+                caption: 'Senyummu, sumber bahagia aku sayangg.'
+            },
+            {
+                type: 'photo',
+                url: 'https://i.imgur.com/4fMjblb.jpeg',
+                caption: 'Sama kamu adalah anugerah terindah dalam hidup aku.'
+            },
+            {
+                type: 'photo',
+                url: 'https://i.imgur.com/tD1MLUN.jpeg',
+                caption: 'Setiap hari yang kita lalui terasa spesial dan berharga.'
+            },
+            {
+                type: 'photo',
+                url: 'https://i.imgur.com/rG2W86w.jpeg',
+                caption: 'Kamu hadir, dan duniaku penuh warna.'
+            },
+            {
+                type: 'photo',
+                url: 'https://i.imgur.com/7IiviAW.jpeg',
+                caption: 'Cinta yang bertumbuh kuat, dari waktu ke waktu.'
+            },
+            {
+                type: 'photo',
+                url: 'https://i.imgur.com/eQUJS6j.jpeg',
+                caption: 'Rumah aku adalah kamu. Selalu nyaman dekat kamu.'
+            },
+            {
+                type: 'photo',
+                url: 'https://i.imgur.com/TCNkfgt.jpeg',
+                caption: 'Hanya melihat kamu, sudah cukup membuat aku bahagia sayang.'
+            },
+            {
+                type: 'photo',
+                url: 'https://i.imgur.com/y60nrz2.jpeg',
+                caption: 'Kenangan manis yang selalu tersimpan rapi.'
+            },
+            {
+                type: 'photo',
+                url: 'https://i.imgur.com/aCIjR7Z.jpeg',
+                caption: 'Aku sangat beruntung punya kamu sayang.'
+            },
+            {
+                type: 'photo',
+                url: 'https://i.imgur.com/fh8U7ns.jpeg',
+                caption: 'Kamu adalah hadiah yang tak ternilai harganya.'
+            },
+            {
+                type: 'photo',
+                url: 'https://i.imgur.com/GtFL27f.jpeg',
+                caption: 'Menghargai setiap detik yang kita miliki.'
+            },
+            {
+                type: 'photo',
+                url: 'https://i.imgur.com/jMi3e13.jpeg',
+                caption: 'Kamu menginspirasi aku untuk menjadi pribadi yang lebih baik.'
+            },
+            {
+                type: 'photo',
+                url: 'https://i.imgur.com/glPoudT.jpeg',
+                caption: 'Kasih aku sama kamu ga kenal batas waktu.'
+            },
+            {
+                type: 'photo',
+                url: 'https://i.imgur.com/qzWshcX.jpeg', // Foto 15
+                caption: 'Selamat ulang tahun, sayangg. Semoga bahagia selalu. 🎂'
+            }
+    ];
+
+    let currentPhotoIndex = 0;
+    let player;
+
+    // YouTube API Ready
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('youtube-player', {
+            height: '0',
+            width: '0',
+            videoId: '6TBhFfda0dM',
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': '6TBhFfda0dM',
+                'enablejsapi': 1
+            },
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    function onPlayerReady(event) {
+        event.target.setVolume(80);
+    }
+
+    function onPlayerStateChange(event) {
+        if (event.data === YT.PlayerState.ENDED) {
+            event.target.playVideo();
+        }
+    }
+
+    function startExperience() {
+        document.getElementById('startOverlay').classList.add('hidden');
+        
+        // Mulai YouTube iframe dengan Autoplay
+        const iframe = document.getElementById('youtube-iframe');
+        // Hanya tambahkan &autoplay=1 jika belum ada
+        if (!iframe.src.includes('autoplay=1')) {
+            iframe.src = iframe.src + '&autoplay=1';
+        }
+        
+        // Juga coba dengan player API
+        if (player && player.playVideo) {
+            player.playVideo();
+        }
+    }
+
+    function showSurprise() {
+        for(let i = 0; i < 100; i++) {
+            createConfetti();
+        }
+        
+        setTimeout(() => {
+            document.getElementById('photoModal').classList.add('active');
+            showPhoto(0);
+        }, 500);
+    }
+
+    function showPhoto(index) {
+        currentPhotoIndex = index;
+        const container = document.getElementById('mediaContainer');
+        const loading = document.getElementById('photoLoading');
+        const error = document.getElementById('photoError');
+        const item = photos[index];
+        
+        loading.style.display = 'block';
+        error.style.display = 'none';
+        container.innerHTML = '';
+        
+        if (item.type === 'video') {
+            // Embed YouTube video
+            const iframe = document.createElement('iframe');
+            iframe.width = '100%'; // Gunakan 100% agar responsif terhadap container
+            iframe.height = '100%'; 
+            
+            // PERBAIKAN DI SINI: Konstruksi URL yang BENAR
+            iframe.src = `https://www.youtube.com/embed/${item.url}?autoplay=1&rel=0&modestbranding=1`;
+            
+            iframe.frameBorder = '0';
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.allowFullscreen = true;
+            iframe.onload = () => {
+                loading.style.display = 'none';
+            };
+            container.appendChild(iframe);
+        } else {
+            // Show image
+            const img = document.createElement('img');
+            img.src = item.url;
+            img.alt = 'Foto Kenangan';
+            img.onload = () => {
+                loading.style.display = 'none';
+            };
+            img.onerror = () => {
+                loading.style.display = 'none';
+                error.style.display = 'block';
+            };
+            container.appendChild(img);
+        }
+        
+        document.getElementById('photoCaption').textContent = item.caption;
+    }
+    
+    // ... (Fungsi photoLoaded, photoError, nextPhoto, prevPhoto, closeModal, createConfetti tetap sama)
+
+    function nextPhoto() {
+        currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+        showPhoto(currentPhotoIndex);
+    }
+
+    function prevPhoto() {
+        currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
+        showPhoto(currentPhotoIndex);
+    }
+
+    function closeModal() {
+        document.getElementById('photoModal').classList.remove('active');
+        // Hapus konten modal saat ditutup agar video/audio berhenti
+        document.getElementById('mediaContainer').innerHTML = '';
+    }
+
+    function createConfetti() {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.background = ['#fff', '#ddd', '#bbb', '#999', '#666'][Math.floor(Math.random() * 5)];
+        confetti.style.animationDelay = Math.random() * 3 + 's';
+        document.body.appendChild(confetti);
+        
+        setTimeout(() => confetti.remove(), 3000);
+    }
+
+</script>
+</body>
+</html>
